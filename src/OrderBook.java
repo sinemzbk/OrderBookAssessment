@@ -1,3 +1,4 @@
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -9,13 +10,13 @@ public class OrderBook {
 
         OrderBook orderBook = new OrderBook();
 
-        orderBook.add(20.0, 5, Side.BUY);
-        orderBook.add(30.0, 3, Side.BUY);
-        orderBook.add(33.0, 9, Side.BUY);
-        orderBook.add(35.0, 3, Side.BUY);//should be first buy order
-        orderBook.add(100.0, 4, Side.SELL);//should be first sell order
-        orderBook.add(200.00, 10, Side.SELL);
-        orderBook.add(120.0, 7, Side.SELL);
+        orderBook.add(20.0, 5, Side.BUY, null);
+        orderBook.add(30.0, 3, Side.BUY, null);
+        orderBook.add(33.0, 9, Side.BUY, null);
+        orderBook.add(35.0, 3, Side.BUY, null);//should be first buy order
+        orderBook.add(100.0, 4, Side.SELL, null);//should be first sell order
+        orderBook.add(200.00, 10, Side.SELL, null);
+        orderBook.add(120.0, 7, Side.SELL, null);
         System.out.println("buyLimitOrderBook Order Book " + orderBook.buyLimitOrderBook);
         System.out.println("sellLimitOrderBook Order Book " + orderBook.sellLimitOrderBook);
 
@@ -30,30 +31,30 @@ public class OrderBook {
                 .ifPresent(orderBook::delete);
         System.out.println("sellLimitOrderBook Order Book " + orderBook.sellLimitOrderBook);
         //add more orders
-        orderBook.add(90.0, 7, Side.SELL);
-        orderBook.add(50.0, 8, Side.SELL);
-        orderBook.add(20.0, 3, Side.SELL);
-        orderBook.add(12.9, 4, Side.SELL);//new first sell order
-        orderBook.add(30.0, 3, Side.BUY);
-        System.out.println("Final sell order Book " + orderBook.sellLimitOrderBook);
+        orderBook.add(90.0, 7, Side.SELL, null);
+        orderBook.add(50.0, 8, Side.SELL, null);
+        orderBook.add(20.0, 3, Side.SELL, null);
+        orderBook.add(12.9, 4, Side.SELL, null);//new first sell order
+        orderBook.add(30.0, 3, Side.BUY, null);
+        System.out.println("Final buy order Book " + orderBook.buyLimitOrderBook);
         System.out.println("Final sell order Book " + orderBook.sellLimitOrderBook);
         System.out.println("buy order Book by price and side " + orderBook.getOrderByPriceAndSide(30.0, Side.BUY));
         System.out.println("sell order Book by price and side " + orderBook.getOrderByPriceAndSide(12.9, Side.SELL));
 
         //should print an error message.
-        orderBook.add(30.0, 0, Side.BUY);
+        orderBook.add(30.0, 0, Side.BUY, null);
     }
 
-    private void add(Double price, int quantity, Side side) {
+    private void add(Double price, int quantity, Side side, LocalDateTime previousCreationTime) {
         try {
             if (Side.findByName(side.name()) != null && quantity > 0) {
                 switch (side) {
                     case BUY:
-                        BuyOrder buyOrder = new BuyOrder(price, quantity, side);
+                        BuyOrder buyOrder = new BuyOrder(price, quantity, side, previousCreationTime);
                         buyLimitOrderBook.add(buyOrder);
                         break;
                     case SELL:
-                        SellOrder sellOrder = new SellOrder(price, quantity, side);
+                        SellOrder sellOrder = new SellOrder(price, quantity, side, previousCreationTime);
                         sellLimitOrderBook.add(sellOrder);
                         break;
                     default:
@@ -91,7 +92,7 @@ public class OrderBook {
             if (order != null) {
                 delete(order);
                 int quantity = order.getQuantity() == newQuantity ? order.getQuantity() : newQuantity;
-                add(order.getPrice(), quantity, order.getSide());
+                add(order.getPrice(), quantity, order.getSide(), order.getCreationTime());
             } else {
                 System.out.println("Error: order does not exist.");
             }
@@ -100,18 +101,18 @@ public class OrderBook {
         }
     }
 
-    private List<Order> getOrderByPriceAndSide(double price, Side side) {
+    private Set<Order> getOrderByPriceAndSide(double price, Side side) {
         try {
             switch (side) {
                 case BUY:
-                    return buyLimitOrderBook.stream().filter(o -> o.getPrice().equals(price)).collect(Collectors.toList());
+                    return buyLimitOrderBook.stream().filter(o -> o.getPrice().equals(price)).collect(Collectors.toSet());
                 case SELL:
-                    return sellLimitOrderBook.stream().filter(o -> o.getPrice().equals(price)).collect(Collectors.toList());
+                    return sellLimitOrderBook.stream().filter(o -> o.getPrice().equals(price)).collect(Collectors.toSet());
                 default:
                     System.out.println("Error invalid side.");
             }
         } catch (Exception e) {
-            System.out.println("Error removing order.");
+            System.out.println("Error retrieving orders.");
         }
         return null;
     }

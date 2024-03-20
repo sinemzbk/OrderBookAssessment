@@ -1,7 +1,9 @@
+import java.time.LocalDateTime;
+
 public class SellOrder extends Order implements Comparable<SellOrder> {
 
-    public SellOrder(Double price, int quantity, Side side) {
-        super(price, quantity, side);
+    public SellOrder(Double price, int quantity, Side side, LocalDateTime previousCreationTime) {
+        super(price, quantity, side, previousCreationTime);
     }
 
     @Override
@@ -10,7 +12,7 @@ public class SellOrder extends Order implements Comparable<SellOrder> {
         if (this.getPrice().compareTo(o.getPrice()) != 0) {
             return this.getPrice().compareTo(o.getPrice());
         } else {
-            return this.getCreationTime().compareTo(o.getCreationTime());
+            return this.getModifiedTime().compareTo(o.getModifiedTime());
         }
     }
 }

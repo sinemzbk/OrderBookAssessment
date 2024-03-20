@@ -19,10 +19,15 @@ from the corresponding set.
 the id and the new quantity, this will cause losing the priority of the original order**
 As modification should result in change of priority of the orders I decided to rather delete the order
 that is being modified, Which will result in a sorted set again, then insert a new order copying unchanged 
-values from the old order causing to reestablish a new priority. 
+values from the old order causing to reestablish a new priority. But to keep integrity of the data I will
+use the previous orders creation date and update the modified date on the new order. 
 
 **c. Data Structures**
 Sorted set - set does not allow duplicates as required and since it is sorted
 it will store elements in a sorted order as defined by the overridden compareTo method.
-Also, a sorted set allows for fast access to elements based on their values, 
-due to the underlying hash table structure.
+Also, a sorted set allows for fast searching, adding and deleting elements, due to the underlying 
+hash table structure.
+**The Order book should allow users to access all orders at a given price level & side; 
+ordered by their priorities**
+for this action I decided to use a set to still ensure distinct values. Order will be maintained due to 
+the main sorted set collection that is being filtered to create this list. 

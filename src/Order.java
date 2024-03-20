@@ -8,21 +8,24 @@ public class Order {
     private int quantity;
     private Side side;
     private LocalDateTime creationTime;
+    private LocalDateTime modifiedTime;
 
-    public Order(Double price, int quantity, Side side) {
+    public Order(Double price, int quantity, Side side, LocalDateTime previousCreationTime) {
         this.Id = UUID.randomUUID();
         this.price = price;
         this.quantity = quantity;
         this.side = side;
-        this.creationTime = LocalDateTime.now();
+        if (creationTime == null) { //new order
+            this.creationTime = LocalDateTime.now();
+            this.modifiedTime = this.creationTime;
+        } else {
+            this.creationTime = previousCreationTime;
+            this.modifiedTime = LocalDateTime.now();
+        }
     }
 
     public UUID getId() {
         return Id;
-    }
-
-    public void setId(UUID id) {
-        Id = id;
     }
 
     public Double getPrice() {
@@ -53,8 +56,8 @@ public class Order {
         return creationTime;
     }
 
-    public void setCreationTime(LocalDateTime creationTime) {
-        this.creationTime = creationTime;
+    public LocalDateTime getModifiedTime() {
+        return modifiedTime;
     }
 
     private void increaseQuantity(int newQuantity) {
@@ -101,6 +104,7 @@ public class Order {
                 ", quantity=" + quantity +
                 ", side=" + side +
                 ", creationTime=" + creationTime +
+                ", modifiedTime=" + modifiedTime +
                 '}';
     }
 }

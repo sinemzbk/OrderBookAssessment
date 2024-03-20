@@ -1,6 +1,8 @@
+import java.time.LocalDateTime;
+
 public class BuyOrder extends Order implements Comparable<BuyOrder> {
-    public BuyOrder(Double price, int quantity, Side side) {
-        super(price, quantity, side);
+    public BuyOrder(Double price, int quantity, Side side, LocalDateTime previousCreationTime) {
+        super(price, quantity, side, previousCreationTime);
     }
 
     @Override
@@ -9,7 +11,7 @@ public class BuyOrder extends Order implements Comparable<BuyOrder> {
         if (o.getPrice().compareTo(this.getPrice()) != 0) {
             return o.getPrice().compareTo(this.getPrice());
         } else {
-            return o.getCreationTime().compareTo(this.getCreationTime());
+            return o.getModifiedTime().compareTo(this.getModifiedTime());
         }
     }
 }
