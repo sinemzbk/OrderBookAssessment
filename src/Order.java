@@ -60,29 +60,6 @@ public class Order {
         return modifiedTime;
     }
 
-    private void increaseQuantity(int newQuantity) {
-        quantity += newQuantity;
-    }
-
-    private void decreaseQuantity(int newQuantity) {
-        //decrease quantity, quantity should not be less than 0
-        if (!(quantity - newQuantity < 0))
-            quantity -= newQuantity;
-        else
-            System.out.println("Error: order quantity decrease amount is empty or will result in a " +
-                    "quantity that is less than 0. Please check amount and try again.");
-
-    }
-
-    private void increasePrice(int newPrice) {
-        price += newPrice;
-    }
-
-    private void decreasePrice(int newPrice) {
-        //decrease price, price can be negative
-        price -= newPrice;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

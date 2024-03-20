@@ -3,6 +3,7 @@
 Decided to use a sorted set as orders will be stored in sorted order, first on price then on creation time.
 This will ensure that searching is faster as it is faster to search sorted fata. 
 **b. Solution approach**
+![img.png](img.png)
 **The Order book should keep all distinct orders ordered on their price level**
 I decided to use a sorted set for this as a set does not store duplicates and I implemented
 the compareTo method to use price to ensure that any interaction with the set results in 
