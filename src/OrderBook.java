@@ -20,16 +20,16 @@ public class OrderBook {
         System.out.println("buyLimitOrderBook Order Book " + orderBook.buyLimitOrderBook);
         System.out.println("sellLimitOrderBook Order Book " + orderBook.sellLimitOrderBook);
 
-//        //modify buy order for 33.0rand to quantity 6
-//        orderBook.buyLimitOrderBook.stream().filter(o -> o.getPrice().equals(33.0)).findFirst()
-//                .ifPresent(order -> orderBook.modify(order.getId(), 6));
+        //modify buy order for 33.0rand to quantity 6
+        orderBook.buyLimitOrderBook.stream().filter(o -> o.getPrice().equals(33.0)).findFirst()
+                .ifPresent(order -> orderBook.modify(order.getId(), 6));
 
-//        System.out.println("buyLimitOrderBook Order Book " + orderBook.buyLimitOrderBook);
+        System.out.println("buyLimitOrderBook Order Book " + orderBook.buyLimitOrderBook);
         //delete first sell order -> 100rand
         //now first sell order should be 120rand
-//        orderBook.sellLimitOrderBook.stream().filter(o -> o.getPrice().equals(100.0)).findFirst()
-//                .ifPresent(orderBook::delete);
-//        System.out.println("sellLimitOrderBook Order Book " + orderBook.sellLimitOrderBook);
+        orderBook.sellLimitOrderBook.stream().filter(o -> o.getPrice().equals(100.0)).findFirst()
+                .ifPresent(orderBook::delete);
+        System.out.println("sellLimitOrderBook Order Book " + orderBook.sellLimitOrderBook);
         //add more orders
         orderBook.add(90.0, 7, Side.SELL);
         orderBook.add(50.0, 8, Side.SELL);
