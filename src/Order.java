@@ -5,23 +5,22 @@ import java.util.UUID;
 public class Order {
     private UUID Id;
     private Double price;
-    private int quantity;
+    private int initialQuantity;
+    private int currentQuantity;
+    private State state;
     private Side side;
     private LocalDateTime creationTime;
     private LocalDateTime modifiedTime;
 
-    public Order(Double price, int quantity, Side side, LocalDateTime previousCreationTime) {
+    public Order(Double price, int initialQuantity, Side side) {
         this.Id = UUID.randomUUID();
         this.price = price;
-        this.quantity = quantity;
+        this.initialQuantity = initialQuantity;
+        this.currentQuantity = this.initialQuantity;
         this.side = side;
-        if (creationTime == null) { //new order
-            this.creationTime = LocalDateTime.now();
-            this.modifiedTime = this.creationTime;
-        } else {
-            this.creationTime = previousCreationTime;
-            this.modifiedTime = LocalDateTime.now();
-        }
+        this.state = State.OPEN;
+        this.creationTime = LocalDateTime.now();
+        this.modifiedTime = this.creationTime;
     }
 
     public UUID getId() {
@@ -32,32 +31,28 @@ public class Order {
         return price;
     }
 
-    public void setPrice(Double price) {
-        this.price = price;
+    public int getCurrentQuantity() {
+        return currentQuantity;
     }
 
-    public int getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
+    public void setCurrentQuantity(int currentQuantity) {
+        this.currentQuantity = currentQuantity;
     }
 
     public Side getSide() {
         return side;
     }
 
-    public void setSide(Side side) {
-        this.side = side;
-    }
-
-    public LocalDateTime getCreationTime() {
-        return creationTime;
+    public void setState(State state) {
+        this.state = state;
     }
 
     public LocalDateTime getModifiedTime() {
         return modifiedTime;
+    }
+
+    public void setModifiedTime(LocalDateTime modifiedTime) {
+        this.modifiedTime = modifiedTime;
     }
 
     @Override
@@ -78,7 +73,9 @@ public class Order {
         return "Order{" +
                 "Id=" + Id +
                 ", price=" + price +
-                ", quantity=" + quantity +
+                ", initialQuantity=" + initialQuantity +
+                ", currentQuantity=" + currentQuantity +
+                ", state=" + state +
                 ", side=" + side +
                 ", creationTime=" + creationTime +
                 ", modifiedTime=" + modifiedTime +

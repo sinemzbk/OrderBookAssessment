@@ -18,4 +18,14 @@ public enum Side {
         }
         return result;
     }
+    public static Side getOppositeSide(Side side){
+        switch (side) {
+            case BUY:
+                return Side.SELL;
+            case SELL:
+                return Side.BUY;
+            default:
+                return null;
+        }
+    }
 }

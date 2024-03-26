@@ -2,8 +2,8 @@ import java.time.LocalDateTime;
 
 public class SellOrder extends Order implements Comparable<SellOrder> {
 
-    public SellOrder(Double price, int quantity, Side side, LocalDateTime previousCreationTime) {
-        super(price, quantity, side, previousCreationTime);
+    public SellOrder(Double price, int initialQuantity, Side side) {
+        super(price, initialQuantity, side);
     }
 
     @Override
